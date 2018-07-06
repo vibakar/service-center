@@ -26,7 +26,7 @@ body {
   padding: 0;
   font-family: sans-serif !important; }
   body .loader {
-    background: rgba(0, 0, 0, 0.2) url("../images/loader.gif") no-repeat 50% center;
+    background: rgba(0, 0, 0, 0.2) url("../images/load.gif") no-repeat 50% center;
     width: 100%;
     height: 100%;
     position: fixed;
@@ -60,7 +60,7 @@ body {
     z-index: 1;
   }
   .navbar-fixed-top {
-    z-index: 1 !important;
+    z-index: 10 !important;
   }
   body .navbar {
     border-radius: unset !important; }
@@ -152,10 +152,6 @@ body {
   body .serviceInfoTab {
     margin-left: 8px;
     margin-top: 50px; }
-  body canvas {
-    max-width: 70% !important;
-    margin: 0px auto;
-    padding: 15px; }
     body canvas:hover {
       cursor: pointer; }
   body .margin20 {
@@ -428,6 +424,27 @@ table, md-toolbar {
 .pl-3 {
     padding-left: 3px
 }
+.md-toolbar-tools {
+    font-size: 15px;
+}
+.pl-12 {
+    padding-left: 12px;
+}
+.chart-doughnut{
+    max-width: 70% !important;
+    margin: 0px auto;
+    padding: 15px;
+}
+.pb-100 {
+    padding-bottom: 100px;
+}
+.no-data{
+    text-align: center;
+    padding-top: 5%;
+}
+.pt-5 {
+    padding-top: 5px;
+}
 
 @media only screen
 and (min-width: 1030px)
@@ -436,11 +453,10 @@ and (max-width: 1366px) {
         padding-top: 10%;
     }
     .mainCardCount {
-        padding-left: 12px;
-        font-size: 20px;
+        font-size: 18px;
     }
     .count {
-        margin: 16px 0px !important;
+        margin: 18px 0px !important;
      }
      .fa-cog {
         margin-left: -4px;

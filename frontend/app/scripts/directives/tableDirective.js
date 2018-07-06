@@ -16,7 +16,7 @@
  */
 'use strict';
 angular.module('serviceCenter')
-    .directive('tableData', ['$mdDialog', function($mdDialog) {
+    .directive('tableData', ['$mdDialog', '$state', function($mdDialog, $state) {
         return {
             restrict: 'E',
             scope: {
@@ -31,7 +31,8 @@ angular.module('serviceCenter')
                 enableSearch: '=search',
                 appList: '=appList',
                 apiInfo: '=apiInfo',
-                searchFn: '=searchFn'
+                searchFn: '=searchFn',
+                statusList: '=statusList'
             },
             templateUrl: 'scripts/views/tableData.html',
             link: function(scope) {
@@ -60,12 +61,15 @@ angular.module('serviceCenter')
                     options: {
                         debounce: 500
                     },
+                    status: scope.statusList[0].id
                 };
+                scope.filter.status = $state.params.status ? $state.params.status : scope.statusList[0].id;
+
                 scope.showSearch = false;
                 scope.searchClose = function() {
                     scope.showSearch = false;
                     scope.filter.search = "";
-                    scope.refresh();
+                    scope.fnSearch(scope.filter.search, scope.filter.status);
                 };
 
                 scope.searchOpen = function() {
@@ -73,7 +77,10 @@ angular.module('serviceCenter')
                 };
 
                 scope.reload = function() {
+                    scope.showSearch = false;
+                    scope.filter.search = "";
                     scope.refresh();
+                    scope.filter.status = $state.params.status ? $state.params.status : scope.statusList[0].id;
                 };
 
                 scope.close = function() {
@@ -84,9 +91,11 @@ angular.module('serviceCenter')
                     scope.removes(serviceId, instances)
                 };
 
-                scope.fnSearch = function(searchData) {
-                    scope.searchFn(searchData);
+                scope.fnSearch = function(searchData, status) {
+                    scope.filter.status = status !== undefined ? status : scope.statusList[0].id;
+                    scope.searchFn(searchData, status);
                 }
+
             }
         };
     }]);

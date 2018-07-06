@@ -30,6 +30,7 @@
     "js-yaml": "3.11.0",
     "jszip": "Stuk/jszip#^3.1.4",
     "swagger-ui": "3.3.2",
-    "angular-swagger-ui": "https://github.com/asifdxtreme/angular-swagger-ui.git#master"
+    "angular-swagger-ui": "https://github.com/asifdxtreme/angular-swagger-ui.git#master",
+    "vis": "^4.21.0"
   }
 }
