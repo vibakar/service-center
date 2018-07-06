@@ -25,7 +25,6 @@ import (
 	"github.com/apache/incubator-servicecomb-service-center/server/core"
 	"github.com/apache/incubator-servicecomb-service-center/server/infra/registry"
 	mgr "github.com/apache/incubator-servicecomb-service-center/server/plugin"
-	sctls "github.com/apache/incubator-servicecomb-service-center/server/tls"
 	"github.com/coreos/etcd/clientv3"
 	"github.com/coreos/etcd/etcdserver/api/v3rpc/rpctypes"
 	"github.com/coreos/etcd/mvcc/mvccpb"
@@ -252,7 +251,6 @@ func (c *EtcdClient) PutNoOverride(ctx context.Context, opts ...registry.PluginO
 		util.Logger().Errorf(err, "PutNoOverride %s failed", op.Key)
 		return false, err
 	}
-	util.Logger().Debugf("response %s %v %v", op.Key, resp.Succeeded, resp.Revision)
 	return resp.Succeeded, nil
 }
 
@@ -441,7 +439,14 @@ func (c *EtcdClient) TxnWithCmp(ctx context.Context, success []registry.PluginOp
 	etcdSuccessOps := c.toTxnRequest(success)
 	etcdFailOps := c.toTxnRequest(fail)
 
-	span := TracingBegin(ctx, "etcd:txn", success[0])
+	var traceOps []registry.PluginOp
+	traceOps = append(traceOps, success...)
+	traceOps = append(traceOps, fail...)
+	if len(traceOps) == 0 {
+		return nil, fmt.Errorf("requested success or fail PluginOp list")
+	}
+
+	span := TracingBegin(ctx, "etcd:txn", traceOps[0])
 	defer TracingEnd(span, err)
 
 	kvc := clientv3.NewKV(c.Client)
@@ -648,32 +653,31 @@ func (c *EtcdClient) SyncMembers() error {
 func dispatch(evts []*clientv3.Event, cb registry.WatchCallback) error {
 	l := len(evts)
 	kvs := make([]*mvccpb.KeyValue, l)
-	sIdx, eIdx, prevAction := 0, 0, mvccpb.PUT
-	pResp := &registry.PluginResponse{Action: registry.Put, Succeeded: true}
+	sIdx, eIdx, rev := 0, 0, int64(0)
+	action, prevEvtType := registry.Put, mvccpb.PUT
 
 	for _, evt := range evts {
-		if prevAction != evt.Type {
-			prevAction = evt.Type
-
+		if prevEvtType != evt.Type {
 			if eIdx > 0 {
-				err := setResponseAndCallback(pResp, kvs[sIdx:eIdx], cb)
+				err := callback(action, rev, kvs[sIdx:eIdx], cb)
 				if err != nil {
 					return err
 				}
 				sIdx = eIdx
 			}
+			prevEvtType = evt.Type
 		}
 
-		if pResp.Revision < evt.Kv.ModRevision {
-			pResp.Revision = evt.Kv.ModRevision
+		if rev < evt.Kv.ModRevision {
+			rev = evt.Kv.ModRevision
 		}
-		pResp.Action = setKvsAndConvertAction(kvs, eIdx, evt)
+		action = setKvsAndConvertAction(kvs, eIdx, evt)
 
 		eIdx++
 	}
 
 	if eIdx > 0 {
-		return setResponseAndCallback(pResp, kvs[sIdx:eIdx], cb)
+		return callback(action, rev, kvs[sIdx:eIdx], cb)
 	}
 	return nil
 }
@@ -693,10 +697,14 @@ func setKvsAndConvertAction(kvs []*mvccpb.KeyValue, pIdx int, evt *clientv3.Even
 	}
 }
 
-func setResponseAndCallback(pResp *registry.PluginResponse, kvs []*mvccpb.KeyValue, cb registry.WatchCallback) error {
-	pResp.Count = int64(len(kvs))
-	pResp.Kvs = kvs
-	return cb("key information changed", pResp)
+func callback(action registry.ActionType, rev int64, kvs []*mvccpb.KeyValue, cb registry.WatchCallback) error {
+	return cb("key information changed", &registry.PluginResponse{
+		Action:    action,
+		Kvs:       kvs,
+		Count:     int64(len(kvs)),
+		Revision:  rev,
+		Succeeded: true,
+	})
 }
 
 func sslEnabled() bool {
@@ -720,7 +728,7 @@ func NewRegistry() mgr.PluginInstance {
 	if sslEnabled() {
 		var err error
 		// go client tls限制，提供身份证书、不认证服务端、不校验CN
-		clientTLSConfig, err = sctls.GetClientTLSConfig()
+		clientTLSConfig, err = mgr.Plugins().TLS().ClientConfig()
 		if err != nil {
 			util.Logger().Error("get etcd client tls config failed", err)
 			inst.err <- err
@@ -761,6 +769,12 @@ func newClient(endpoints []string) (*clientv3.Client, error) {
 		return client, nil
 	}
 
+	defer func() {
+		if err != nil {
+			client.Close()
+		}
+	}()
+
 	ctx, _ := context.WithTimeout(client.Ctx(), healthCheckTimeout)
 	resp, err := client.MemberList(ctx)
 	if err != nil {
@@ -782,7 +796,8 @@ epLoop:
 			}
 		}
 		// maybe endpoints = [domain A, domain B] or there are more than one cluster
-		return nil, fmt.Errorf("the etcd cluster endpoint list%v does not contain %s", cluster, ep)
+		err = fmt.Errorf("the etcd cluster endpoint list%v does not contain %s", cluster, ep)
+		return nil, err
 	}
 	return client, nil
 }
