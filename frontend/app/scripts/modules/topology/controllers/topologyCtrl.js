@@ -55,9 +55,12 @@ angular.module('serviceCenter.topology', [])
                     }
                 } else {
                     $scope.allAppId = [];
+                    document.getElementById("topology").innerHTML = "";
                 }
             }, function(error) {
+                   $(".loader").hide();
                    $scope.allAppId = [];
+                   document.getElementById("topology").innerHTML = "";
             });
         }
         $scope.getServices();

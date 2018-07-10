@@ -52,15 +52,18 @@ limitations under the License.
             <span class="brand"> {{ "serviceCenter" | translate }}</span>
         </li>
         <li>
-            <a ui-sref="sc.dashboard" ui-sref-active="active"><i class="fa fa-desktop" aria-hidden="true"></i>    {{ "dashboard" | translate }}</a>
+            <a ui-sref="sc.dashboard" ui-sref-active="active"><i class="fa fa-desktop" aria-hidden="true"></i> {{ "dashboard" | translate }}</a>
         </li>
         <li>
             <a ui-sref="sc.allServices" ui-sref-active="active" ng-class="[{active: $state.current.name === 'sc.info.instance'},
             {activeProvider: $state.current.name === 'sc.info.provider'}, {activeConsumer: $state.current.name === 'sc.info.consumer'},
-            {schemaTab: $state.current.name === 'sc.info.schema'}]"><i class="fa fa-bars" aria-hidden="true"></i>    {{ "services" | translate }}</a>
+            {schemaTab: $state.current.name === 'sc.info.schema'}]"><i class="fa fa-cog" aria-hidden="true"></i> {{ "services" | translate }}</a>
         </li>
         <li>
-            <a ui-sref="sc.topology" ui-sref-active="active"><i class="fa fa-arrows-alt" aria-hidden="true"></i>  {{ "topology" | translate }}</a>
+            <a ui-sref="sc.instances" ui-sref-active="active"><i class="fa fa-cogs" aria-hidden="true"></i> {{ "instances" | translate }}</a>
+        </li>
+        <li>
+            <a ui-sref="sc.topology" ui-sref-active="active"><i class="fa fa-arrows-alt" aria-hidden="true"></i> {{ "topology" | translate }}</a>
         </li>
     </ul>
 </div>

@@ -17,7 +17,7 @@
 'use strict';
 
 angular.module('serviceCenter', ['ngAnimate', 'ngMaterial', 'ngAria', 'ngMessages', 'ngResource', 'ngSanitize', 'ui.router', 'pascalprecht.translate', 'serviceCenter.router',
-        'serviceCenter.dashboard', 'serviceCenter.sc', 'serviceCenter.topology', 'md.data.table', 'chart.js', 'swaggerUi', 'mmumshad.yamljs'
+        'serviceCenter.dashboard', 'serviceCenter.sc', 'serviceCenter.instances', 'serviceCenter.topology', 'md.data.table', 'chart.js', 'swaggerUi', 'mmumshad.yamljs'
     ])
     .config(['$translateProvider', 'english', 'chinese', function($translateProvider, english, chinese) {
         $translateProvider.useSanitizeValueStrategy(null);

@@ -28,6 +28,8 @@ angular.module('serviceCenter')
         "instances": "Instances",
         "search": "Search",
         "name": "Name",
+        "instanceHostName": "Instance Host Name",
+        "serviceName": "Service Name",
         "status": "Status",
         "appId": "AppId",
         "version": "Version",
@@ -65,7 +67,7 @@ angular.module('serviceCenter')
         "page": "Page",
         "rowsPerPage": "Rows Per Page",
         "of": "Of",
-        "serviceStatistics": "Service Statistics",
+        "serviceStatistics": "Service Instance Statistics",
         "updated": "Updated",
         "footerValue": "ServiceComb",
         "copyright": "Copyright",
@@ -90,5 +92,11 @@ angular.module('serviceCenter')
         "back": "back",
         "highwayErr": "Highway is not supported currently",
         "noInstanceTip": "Instance is not available",
-        "topology": "Topology"
+        "topology": "Topology",
+        "userGuide": {
+            "title": "User Guide",
+            "developServiceProvider": "How to develop service provider?",
+            "developServiceConsumer": "How to develop service consumer?",
+            "instanceUnregister": "When will the instance get unregistered from service center?"
+        }
     });

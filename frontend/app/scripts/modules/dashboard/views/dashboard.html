@@ -14,12 +14,12 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License..
 -->
-<div class="row dashboard">
+<div class="row col-md-10">
     <div class="col-sm-12 col-md-12 pb10">
-      <div class="pull-right">
-        <i class="fa fa-clock-o"></i> <span class="updatedTime">{{ "updated" | translate }} {{ updatedTime }} </span>
-        <span ng-click="getAllServices()"><i class="fa fa-refresh dashboardRefresh"></i></span>
-      </div>
+        <div class="pull-right">
+            <i class="fa fa-clock-o"></i> <span class="updatedTime">{{ "updated" | translate }} {{ updatedTime }} </span>
+            <span ng-click="getAllServices()"><i class="fa fa-refresh dashboardRefresh"></i></span>
+        </div>
     </div>
     <div class="col-sm-12 col-md-12 col-lg-3" ng-repeat="info in dashboardInfo">
         <div class="mainCard">
@@ -39,42 +39,50 @@ limitations under the License..
         </div>
     </div>
     <div class="row chartAlign">
-	 <div class="col-sm-12 col-md-12">
-        <div class="card">
-            <div class="header">
-                <h3 class="title">{{ "serviceStatistics" | translate }}</h3>       
-            </div>
-            <div class="content">
-            <div class="row">
-                <div class="col-md-6 servicesChart">
-                    <canvas class="chart chart-doughnut" chart-data="servicesChartData" chart-colors="colors" chart-labels="labels"></canvas> 
-                    <div class="chart-legend">
-                        <i class="fa fa-circle legendStarting"></i><span class="pl-3">{{ "starting" | translate }}</span>
-                        <i class="fa fa-circle legendUp"></i> {{ "up" | translate }}
-                        <i class="fa fa-circle legendDown"></i> {{ "down" | translate }}
-                        <i class="fa fa-circle legendUnavailable"></i> {{ "outofservice" | translate }}
-                    </div>
+        <div class="col-sm-12 col-md-12">
+            <div class="card">
+                <div class="header">
+                    <h3 class="title">{{ "serviceStatistics" | translate }}</h3>
                 </div>
-                <div class="col-sm-6 col-md-6">
+                <div class="content">
                     <div class="row">
-                        <div class="col-sm-12 col-md-12 dashboardCount" ng-repeat="service in servicesStatusData">
-                            <div class="row" ng-click="goToServices(service.title)">
-                                <div class="col-xs-4 col-sm-6 col-md-3 statusIcon {{ service.title }}">
-                                    <i class="fa {{ service.iconName }} fa-2x icon-color"></i>
-                                </div>
-                                <div class="col-xs-4 col-sm-4 col-md-6 statusTitle">
-                                    <span>{{ service.title | translate }}</span>
-                                </div>
-                                <div class="col-xs-4 col-sm-2 col-md-3 statusCount">
-                                    <span class="pull-right">{{ service.count }}</span>
+                        <div class="col-md-6 servicesChart">
+                            <canvas class="chart chart-doughnut" chart-data="servicesChartData" chart-colors="colors" chart-labels="labels"></canvas>
+                            <div class="chart-legend">
+                                <i class="fa fa-circle legendStarting"></i><span class="pl-3">{{ "starting" | translate }}</span>
+                                <i class="fa fa-circle legendUp"></i> {{ "up" | translate }}
+                                <i class="fa fa-circle legendDown"></i> {{ "down" | translate }}
+                                <i class="fa fa-circle legendUnavailable"></i> {{ "outofservice" | translate }}
+                            </div>
+                        </div>
+                        <div class="col-sm-6 col-md-6">
+                            <div class="row">
+                                <div class="col-sm-12 col-md-12 dashboardCount" ng-repeat="service in servicesStatusData">
+                                    <div class="row" ng-click="goToServices(service.title)">
+                                        <div class="col-xs-4 col-sm-6 col-md-3 statusIcon {{ service.title }}">
+                                            <i class="fa {{ service.iconName }} fa-2x icon-color"></i>
+                                        </div>
+                                        <div class="col-xs-4 col-sm-4 col-md-6 statusTitle">
+                                            <span>{{ service.title | translate }}</span>
+                                        </div>
+                                        <div class="col-xs-4 col-sm-2 col-md-3 statusCount">
+                                            <span class="pull-right">{{ service.count }}</span>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-            </div>
         </div>
-     </div>
     </div>
- </div>
+</div>
+<div class="col-md-2">
+    <h4 class="userGuide">{{ "userGuide.title" | translate }}</h4>
+    <ul class="userGuide-list">
+        <li><a target="_blank" href="http://servicecomb.incubator.apache.org/users/service-definition/">{{ 'userGuide.developServiceProvider' | translate }}</a></li>
+        <li><a target="_blank" href="http://servicecomb.incubator.apache.org/users/develop-with-rest-template/">{{ 'userGuide.developServiceConsumer' | translate }}</a></li>
+        <li><a target="_blank" href="http://servicecomb.incubator.apache.org/users/service-heartbeat/">{{ 'userGuide.instanceUnregister' | translate }}</a></li>
+    </ul>
+</div>

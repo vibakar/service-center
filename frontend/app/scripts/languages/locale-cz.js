@@ -28,6 +28,8 @@ angular.module('serviceCenter')
         "instances": "实例",
         "search": "搜索",
         "name": "名称",
+        "instanceHostName": "实例主机名",
+        "serviceName": "服务名称",
         "status": "状态",
         "appId": "应用",
         "version": "版本",
@@ -65,7 +67,7 @@ angular.module('serviceCenter')
         "page": "页",
         "rowsPerPage": "每页行数",
         "of": "的",
-        "serviceStatistics": "服务统计",
+        "serviceStatistics": "服务实例统计",
         "updated": "更新",
         "footerValue": "ServiceComb",
         "copyright": "版权所有",
@@ -90,5 +92,11 @@ angular.module('serviceCenter')
         "back": "返回",
         "highwayErr": "Highway目前不受支持",
         "noInstanceTip": "实例不可用",
-        "topology": "拓扑"
+        "topology": "拓扑",
+        "userGuide": {
+            "title": "用户指南",
+            "developServiceProvider": "如何开发服务提供商？",
+            "developServiceConsumer": "如何发展服务消费者？",
+            "instanceUnregister": "实例何时从服务中心取消注册？"
+        }
     });

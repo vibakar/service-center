@@ -128,6 +128,15 @@ angular.module('serviceCenter.router', [])
                     }]
                 }
             })
+            .state('sc.instances', {
+                url: '/instances',
+                views: {
+                    'base': {
+                        templateUrl: 'scripts/modules/instances/views/instances.html',
+                        controller: 'instancesController'
+                    }
+                }
+            })
             .state('sc.topology', {
                 url: '/topology',
                 views: {

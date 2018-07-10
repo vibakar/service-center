@@ -16,7 +16,7 @@
  */
 'use strict';
 angular.module('serviceCenter')
-    .directive('tableData', ['$mdDialog', '$state', function($mdDialog, $state) {
+    .directive('tableData', ['$rootScope', '$mdDialog', '$state', '$translate', function($rootScope, $mdDialog, $state, $translate) {
         return {
             restrict: 'E',
             scope: {
@@ -46,6 +46,18 @@ angular.module('serviceCenter')
                     page: 1
                 };
 
+                $rootScope.$on('$translateChangeSuccess', function() {
+                    scope.changePaginationLabel();
+                });
+
+                scope.changePaginationLabel = function() {
+                    scope.paginationLabel = {
+                        page: $translate.instant('page'),
+                        rowsPerPage: $translate.instant('rowsPerPage'),
+                        of: $translate.instant('of')
+                    }
+                }
+
                 scope.paginationOptions = {
                     rowSelection: false,
                     multiSelect: false,
@@ -61,9 +73,12 @@ angular.module('serviceCenter')
                     options: {
                         debounce: 500
                     },
-                    status: scope.statusList[0].id
+                    status: scope.statusList ? scope.statusList[0].id : []
                 };
-                scope.filter.status = $state.params.status ? $state.params.status : scope.statusList[0].id;
+
+                if (scope.statusList && scope.statusList.length > 0) {
+                    scope.filter.status = $state.params.status ? $state.params.status : scope.statusList[0].id;
+                }
 
                 scope.showSearch = false;
                 scope.searchClose = function() {
@@ -80,7 +95,9 @@ angular.module('serviceCenter')
                     scope.showSearch = false;
                     scope.filter.search = "";
                     scope.refresh();
-                    scope.filter.status = $state.params.status ? $state.params.status : scope.statusList[0].id;
+                    if (scope.statusList && scope.statusList.length > 0) {
+                        scope.filter.status = $state.params.status ? $state.params.status : scope.statusList[0].id;
+                    }
                 };
 
                 scope.close = function() {

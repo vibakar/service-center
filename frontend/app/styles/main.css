@@ -179,8 +179,13 @@ body {
     display: block;
     font-size: 40px;
   }
-.dashboard {
-  width: 80%;
+.userGuide {
+   text-align: center;
+   text-decoration: underline;
+}
+.userGuide-list {
+    list-style: upper-roman;
+    line-height: 2;
 }
 .legendStarting {
   color: #00c0ef;
@@ -249,6 +254,7 @@ body {
 }
 .chartAlign {
   padding: 0px 15px;
+  border-right: 1px solid lightgrey;
 }
 .dashboardRefresh {
     width: 30px;
