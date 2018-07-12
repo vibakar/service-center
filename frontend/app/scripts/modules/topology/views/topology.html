@@ -15,22 +15,18 @@ See the License for the specific language governing permissions and
 limitations under the License.
 -->
 
-<md-content>
-    <md-card>
-        <md-toolbar>
-            <div class="md-toolbar-tools">
-                <label for="">AppId:</label>
-                <md-select class="pl-12" ng-disabled="allAppId.length == 0" placeholder="Select AppId" ng-model="appId" ng-change="getServices(appId)">
-                    <md-option ng-repeat="appId in allAppId" ng-value="appId">{{appId}}</md-option>
-                </md-select>
-                <span flex></span>
-                <md-button class="md-icon-button" ng-click="getServices(appId)" aria-label="{{ 'refresh' | translate }}" title="{{ 'refresh' | translate }}">
-                    <i class="fa fa-refresh fa-lg"></i>
-                </md-button>
-            </div>
-        </md-toolbar>
-    </md-card>
-</md-content>
+<div class="topology-header">
+    <md-input-container md-no-float class="pull-left">
+        <span class="appId-label">AppId:</span>
+        <md-select class="pl-60" ng-disabled="allAppId.length == 0" placeholder="Select AppId" ng-model="appId" ng-change="getServices(appId)">
+            <md-option ng-repeat="appId in allAppId" ng-value="appId">{{appId}}</md-option>
+        </md-select>
+    </md-input-container>
+    <span flex></span>
+    <md-button class="md-icon-button pull-right pt-15" ng-click="getServices(appId)" aria-label="{{ 'refresh' | translate }}" title="{{ 'refresh' | translate }}">
+        <i class="fa fa-refresh fa-lg"></i>
+    </md-button>
+</div>
 <div class="no-data" ng-if="allAppId.length == 0">
     <h4>{{ "noDataFound" | translate }}</h4>
 </div>

@@ -18,62 +18,65 @@
 angular.module('serviceCenter.dashboard', [])
     .controller('dashboardController', ['$scope', '$state', 'apiConstant', 'httpService', '$q', '$interval', function($scope, $state, apiConstant, httpService, $q, $interval) {
 
-        $scope.labels = ["STARTING", "UP", "DOWN", "OUT OF SERVICE"];
-        $scope.colors = ["#00c0ef", "#00a65a", "#dd4b39", "#A9A9A9"];
-        $scope.servicesChartData = [];
-
-        $scope.servicesStatusData = [{
-                count: 0,
-                title: "STARTING",
-                iconName: "fa-spinner"
-            },
-            {
-                count: 0,
-                title: "UP",
-                iconName: "fa-arrow-up"
-            },
-            {
-                count: 0,
-                title: "DOWN",
-                iconName: "fa-arrow-down"
-            },
-            {
-                count: 0,
-                title: "OUTOFSERVICE",
-                iconName: "fa-ban"
-            }
-        ];
         $scope.getAllServices = function() {
             $(".loader").show();
             $scope.dashboardInfo = [{
                     count: 0,
                     title: "services",
-                    iconName: "fa-cog"
+                    iconName: "fa fa-cog"
                 },
                 {
                     count: 0,
                     title: "instances",
-                    iconName: "fa-cogs"
+                    iconName: "fa fa-cogs"
                 },
                 {
                     count: 0,
                     title: "providers",
-                    iconName: "fa-server"
+                    iconName: "fa fa-arrow-circle-right"
                 },
                 {
                     count: 0,
                     title: "consumers",
-                    iconName: "fa-users"
+                    iconName: "fa fa-arrow-circle-left"
+                }
+            ];
+            $scope.instanceStat = [{
+                    count: 0,
+                    title: "starting",
+                    percent: 0,
+                    status: "STARTING"
+                },
+                {
+                    count: 0,
+                    title: "up",
+                    percent: 0,
+                    status: "UP"
+                },
+                {
+                    count: 0,
+                    title: "down",
+                    percent: 0,
+                    status: "DOWN"
+                },
+                {
+                    count: 0,
+                    title: "outOfService",
+                    percent: 0,
+                    status: "OUTOFSERVICE"
                 }
             ];
 
             $scope.runningServices = [];
             $scope.stoppedServices = [];
             $scope.startingServices = [];
-            $scope.outofserviceServices = [];
+            $scope.outOfServiceServices = [];
 
             $scope.totalProviders = [];
             $scope.totalConsumers = [];
+
+            $scope.services = [];
+            $scope.instances = [];
 
             var url = apiConstant.api.allServices.url;
             var method = apiConstant.api.allServices.method;
@@ -82,9 +85,13 @@ angular.module('serviceCenter.dashboard', [])
                 if (response && response.data && response.data.allServicesDetail) {
                     $scope.dashboardInfo[0].count = response.data.allServicesDetail.length;
                     response.data.allServicesDetail.forEach(function(services) {
-
+                        $scope.services.push(services.microService);
                         if (services.instances) {
                             services.instances.forEach(function(instance) {
+                                instance.serviceName = services.microService.serviceName;
+                                instance.appId = services.microService.appId;
+                                $scope.instances.push(instance);
+
                                 if (instance.status == "STARTING") {
                                     $scope.startingServices.push(services);
                                 }
@@ -95,7 +102,7 @@ angular.module('serviceCenter.dashboard', [])
                                     $scope.stoppedServices.push(services);
                                 }
                                 if (instance.status == "OUTOFSERVICE") {
-                                    $scope.outofserviceServices.push(services);
+                                    $scope.outOfServiceServices.push(services);
                                 }
                             });
                             $scope.dashboardInfo[1].count = $scope.dashboardInfo[1].count + services.instances.length;
@@ -129,49 +136,23 @@ angular.module('serviceCenter.dashboard', [])
                             })
                         }
                     });
-                    $scope.servicesChartData[0] = $scope.startingServices.length;
-                    $scope.servicesChartData[1] = $scope.runningServices.length;
-                    $scope.servicesChartData[2] = $scope.stoppedServices.length;
-                    $scope.servicesChartData[3] = $scope.outofserviceServices.length;
 
-                    $scope.servicesStatusData[0].count = $scope.startingServices.length;
-                    $scope.servicesStatusData[1].count = $scope.runningServices.length;
-                    $scope.servicesStatusData[2].count = $scope.stoppedServices.length;
-                    $scope.servicesStatusData[3].count = $scope.outofserviceServices.length;
+                    $scope.instanceStat[0].percent = Math.round($scope.startingServices.length / $scope.dashboardInfo[1].count) * 100;
+                    $scope.instanceStat[1].percent = Math.round($scope.runningServices.length / $scope.dashboardInfo[1].count) * 100;
+                    $scope.instanceStat[2].percent = Math.round($scope.stoppedServices.length / $scope.dashboardInfo[1].count) * 100;
+                    $scope.instanceStat[3].percent = Math.round($scope.outOfServiceServices.length / $scope.dashboardInfo[1].count) * 100;
+
+                    $scope.instanceStat[0].count = $scope.startingServices.length;
+                    $scope.instanceStat[1].count = $scope.runningServices.length;
+                    $scope.instanceStat[2].count = $scope.stoppedServices.length;
+                    $scope.instanceStat[3].count = $scope.outOfServiceServices.length;
 
                     $scope.dashboardInfo[2].count = $scope.totalProviders.length;
                     $scope.dashboardInfo[3].count = $scope.totalConsumers.length;
-                    $scope.timeSince(new Date());
-
-                } else {
-                    $scope.timeSince(new Date());
                 }
             }, function(error) {
                 $(".loader").hide();
             });
-        };
-
-        $scope.timeSince = function(date) {
-            $scope.updatedTime = "few seconds ago";
-            $interval(function() {
-                var seconds = Math.floor((new Date() - date) / 1000);
-                var interval = Math.floor(seconds / 86400);
-                if (interval > 1) {
-                    $scope.updatedTime = interval + " days ago";
-                    return;
-                }
-                interval = Math.floor(seconds / 3600);
-                if (interval > 1) {
-                    $scope.updatedTime = interval + " hours ago";
-                    return;
-                }
-                interval = Math.floor(seconds / 60);
-                if (interval > 1) {
-                    $scope.updatedTime = interval + " minutes ago";
-                    return;
-                }
-                $scope.updatedTime = "1 minute ago";
-            }, 60000)
         };
 
         $scope.goToServices = function(status) {

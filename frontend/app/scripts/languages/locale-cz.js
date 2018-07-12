@@ -44,10 +44,10 @@ angular.module('serviceCenter')
         "serviceConsumers": "服务消费者",
         "schema": "服务契约",
         "dashboard": "仪表板",
-        "up": "UP",
-        "down": "DOWN",
-        "starting": "STARTING",
-        "outofservice": "OUTOFSERVICE",
+        "up": "向上",
+        "down": "下",
+        "starting": "开始",
+        "outOfService": "暂停服务",
         "dashboard": "仪表板",
         "getSchema": "获取契约",
         "error": "错误",
@@ -67,7 +67,8 @@ angular.module('serviceCenter')
         "page": "页",
         "rowsPerPage": "每页行数",
         "of": "的",
-        "serviceStatistics": "服务实例统计",
+        "serviceStatistics": "服务统计",
+        "serviceInstanceStatistics": "服务实例统计",
         "updated": "更新",
         "footerValue": "ServiceComb",
         "copyright": "版权所有",
@@ -98,5 +99,6 @@ angular.module('serviceCenter')
             "developServiceProvider": "如何开发服务提供商？",
             "developServiceConsumer": "如何发展服务消费者？",
             "instanceUnregister": "实例何时从服务中心取消注册？"
-        }
+        },
+        "viewMoreInfo": "查看更多信息"
     });

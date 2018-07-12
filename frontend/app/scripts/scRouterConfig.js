@@ -146,8 +146,4 @@ angular.module('serviceCenter.router', [])
                     }
                 }
             })
-            .state('error', {
-                url: '/error',
-                templateUrl: 'views/error.html'
-            });
     }]);

@@ -44,10 +44,10 @@ angular.module('serviceCenter')
         "serviceConsumers": "Service Consumers",
         "schema": "Schema",
         "dashboard": "Dashboard",
-        "up": "UP",
-        "down": "DOWN",
-        "starting": "STARTING",
-        "outofservice": "OUTOFSERVICE",
+        "up": "Up",
+        "down": "Down",
+        "starting": "Starting",
+        "outOfService": "Out Of Service",
         "dashboard": "Dashboard",
         "getSchema": "Get Schema",
         "error": "Error",
@@ -67,7 +67,8 @@ angular.module('serviceCenter')
         "page": "Page",
         "rowsPerPage": "Rows Per Page",
         "of": "Of",
-        "serviceStatistics": "Service Instance Statistics",
+        "serviceStatistics": "Service Statistics",
+        "serviceInstanceStatistics": "Service Instance Statistics",
         "updated": "Updated",
         "footerValue": "ServiceComb",
         "copyright": "Copyright",
@@ -98,5 +99,6 @@ angular.module('serviceCenter')
             "developServiceProvider": "How to develop service provider?",
             "developServiceConsumer": "How to develop service consumer?",
             "instanceUnregister": "When will the instance get unregistered from service center?"
-        }
+        },
+        "viewMoreInfo": "View more info"
     });
