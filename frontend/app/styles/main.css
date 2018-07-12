@@ -151,7 +151,8 @@ body {
         line-height: 30px; }
   body .serviceInfoTab {
     margin-left: 8px;
-    margin-top: 50px; }
+    margin-top: 50px;
+    padding-bottom: 100px; }
     body canvas:hover {
       cursor: pointer; }
   body .margin20 {
@@ -191,7 +192,7 @@ body {
     background-color: #0091EA !important;
     color: #fff;
     padding-top: 5px;
-    z-index: 9999;
+    z-index: 0;
 }
 md-card {
     margin-left: 0px;
@@ -354,6 +355,12 @@ table, md-toolbar {
     height: 50px;
     margin-right: 20px;
 }
+a.disabled {
+    pointer-events: none;
+    cursor: default;
+    color: grey;
+}
+
 @media only screen
 and (min-width: 1030px)
 and (max-width: 1366px) {
@@ -374,6 +381,9 @@ and (max-width: 1366px) {
         margin-left: 8% !important;
         margin-top: 20% !important;
         font-size: 75px !important;
+     }
+     md-table-container {
+        overflow-x: hidden;
      }
 }
 /*# sourceMappingURL=main.css.map */

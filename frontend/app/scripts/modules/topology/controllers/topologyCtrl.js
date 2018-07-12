@@ -35,7 +35,7 @@ angular.module('serviceCenter.topology', [])
                     $scope.allServicesDetail = response.data.allServicesDetail;
 
                     angular.forEach(response.data.allServicesDetail, function(service){
-                        if(!$scope.allAppId.includes(service.microService.appId)) {
+                        if(!$scope.allAppId.includes(service.microService.appId) && service.microService.serviceName.toLowerCase() !== 'servicecenter') {
                             $scope.allAppId.push(service.microService.appId);
                         }
                     });
